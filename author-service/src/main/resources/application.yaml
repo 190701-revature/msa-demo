@@ -1,0 +1,5 @@
+server:  port: 8040
+
+spring:
+  application:
+    name: author-service  datasource:    username: ${DB_USER}    password: ${DB_PASSWORD}    url: ${DB_URL}  jpa:    hibernate:      ddl-auto: update

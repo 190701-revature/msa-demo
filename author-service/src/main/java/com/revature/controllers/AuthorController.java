@@ -12,33 +12,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.revature.model.Book;
-import com.revature.services.BookService;
+import com.revature.models.Author;
+import com.revature.services.AuthorService;
 
 @RestController
 @RequestMapping("")
-public class BookController {
-	
-	BookService bookService;
+public class AuthorController {
+
+	AuthorService authorService;
 	
 	@Autowired
-	public BookController(BookService bookService) {
-		this.bookService = bookService;
+	public void setAuthorService(AuthorService authorService) {
+		this.authorService = authorService;
 	}
 
+
 	@PostMapping("")
-	public Book saveBook(@RequestBody Book book) {
-		return this.bookService.saveBook(book);
+	public Author saveAuthor(@RequestBody Author author) {
+		return this.authorService.saveAuthor(author);
 	}
 	
 	@GetMapping("/{id}")
-	public Book getById(@PathVariable int id) {
-		return this.bookService.getById(id);
+	public Author getAuthorById(@PathVariable int id) {
+		return authorService.getById(id);
 	}
 	
 	@PutMapping("")
-	public Book putBook(@RequestBody Book book) {
-		return this.bookService.putBook(book);
+	public Author updateAuthor(@RequestBody Author author) {
+		return authorService.update(author);
 	}
 	
 	@ExceptionHandler(HttpClientErrorException.class)
@@ -49,10 +50,3 @@ public class BookController {
 				
 	}
 }
-
-
-
-
-
-
-
