@@ -2,6 +2,7 @@ package com.revature.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,18 +12,21 @@ import javax.validation.constraints.Positive;
 
 @Entity
 public class Book {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@NotBlank
 	private String name;
-	
+
 	private LocalDate releaseDate;
-	
+
 	@Positive
 	private int pageCount;
+
+	@Column(nullable = true)
+	private Integer authorId;
 
 	public int getId() {
 		return id;
@@ -40,14 +44,6 @@ public class Book {
 		this.name = name;
 	}
 
-	public LocalDate getReleaseDate() {
-		return releaseDate;
-	}
-
-	public void setReleaseDate(LocalDate releaseDate) {
-		this.releaseDate = releaseDate;
-	}
-
 	public int getPageCount() {
 		return pageCount;
 	}
@@ -56,10 +52,27 @@ public class Book {
 		this.pageCount = pageCount;
 	}
 
+	public Integer getAuthorId() {
+		return authorId;
+	}
+
+	public void setAuthorId(Integer authorId) {
+		this.authorId = authorId;
+	}
+
+	public LocalDate getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(LocalDate releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((authorId == null) ? 0 : authorId.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + pageCount;
@@ -76,6 +89,11 @@ public class Book {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
+		if (authorId == null) {
+			if (other.authorId != null)
+				return false;
+		} else if (!authorId.equals(other.authorId))
+			return false;
 		if (id != other.id)
 			return false;
 		if (name == null) {
@@ -95,15 +113,17 @@ public class Book {
 
 	@Override
 	public String toString() {
-		return "Book [id=" + id + ", name=" + name + ", releaseDate=" + releaseDate + ", pageCount=" + pageCount + "]";
+		return "Book [id=" + id + ", name=" + name + ", releaseDate=" + releaseDate + ", pageCount=" + pageCount
+				+ ", authorId=" + authorId + "]";
 	}
 
-	public Book(int id, String name, LocalDate releaseDate, int pageCount) {
+	public Book(int id, @NotBlank String name, LocalDate releaseDate, @Positive int pageCount, Integer authorId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.releaseDate = releaseDate;
 		this.pageCount = pageCount;
+		this.authorId = authorId;
 	}
 
 	public Book() {

@@ -1,5 +1,7 @@
 package com.revature.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +36,11 @@ public class BookController {
 	@GetMapping("/{id}")
 	public Book getById(@PathVariable int id) {
 		return this.bookService.getById(id);
+	}
+	
+	@GetMapping("/author/{id}")
+	public List<Book> getByAuthorId(@PathVariable int id) {
+		return this.bookService.findBooksByAuthorId(id);
 	}
 	
 	@PutMapping("")

@@ -1,10 +1,16 @@
 package com.revature.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
+import com.revature.dto.Book;
 import com.revature.models.Author;
 import com.revature.repositories.AuthorRepository;
 
@@ -22,8 +28,24 @@ public class AuthorService {
 	}
 
 	public Author getById(int id) {
-		return authorRepository.findById(id)
+		Author author = authorRepository.findById(id)
 			.orElseThrow( () -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+		
+		RestTemplate template = new RestTemplate();
+
+//		List<Book> list = template.getForObject(
+//				"http://localhost:8080/books/author/"+author.getId(), Book.class
+//				);
+		
+		List<Book> books = template.exchange("http://localhost:8080/books/author/"+author.getId(),
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<List<Book>>() {}).getBody();
+		
+		System.out.println(books);
+		
+		author.setBooks(books);
+		return author;
 	}
 
 	public Author update(Author author) {
