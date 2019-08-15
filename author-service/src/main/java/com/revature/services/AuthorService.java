@@ -7,11 +7,13 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.revature.clients.BookClient;
 import com.revature.dto.Book;
+import com.revature.messenger.Messenger;
 import com.revature.models.Author;
 import com.revature.repositories.AuthorRepository;
 
@@ -19,11 +21,14 @@ import com.revature.repositories.AuthorRepository;
 public class AuthorService {
 	AuthorRepository authorRepository;
 	BookClient bookClient;
+	Messenger messenger;
 
 	@Autowired
-	public void setAuthorRepository(AuthorRepository authorRepository, BookClient bookClient) {
+	public void setAuthorRepository(AuthorRepository authorRepository, BookClient bookClient,
+				Messenger messenger) {
 		this.authorRepository = authorRepository;
 		this.bookClient = bookClient;
+		this.messenger = messenger;
 	}
 
 	public Author saveAuthor(Author author) {
@@ -68,6 +73,12 @@ public class AuthorService {
 			return authorRepository.save(author);
 		}
 		throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
+	}
+
+	@Transactional
+	public void deleteAuthor(int id) {
+		authorRepository.deleteById(id);
+		messenger.sendDeleteBooksMessage(id);
 	}
 	
 }
