@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.revature.clients.BookClient;
 import com.revature.dto.Book;
 import com.revature.models.Author;
 import com.revature.repositories.AuthorRepository;
@@ -17,10 +18,12 @@ import com.revature.repositories.AuthorRepository;
 @Service
 public class AuthorService {
 	AuthorRepository authorRepository;
+	BookClient bookClient;
 
 	@Autowired
-	public void setAuthorRepository(AuthorRepository authorRepository) {
+	public void setAuthorRepository(AuthorRepository authorRepository, BookClient bookClient) {
 		this.authorRepository = authorRepository;
+		this.bookClient = bookClient;
 	}
 
 	public Author saveAuthor(Author author) {
@@ -28,6 +31,18 @@ public class AuthorService {
 	}
 
 	public Author getById(int id) {
+		Author author = authorRepository.findById(id)
+				.orElseThrow( () -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+		
+		// Do feign client stuff
+		List<Book> books = this.bookClient.getByAuthorId(author.getId());
+		author.setBooks(books);
+		
+		return author;
+	}
+
+	
+	public Author getByIdWithRestTemplate(int id) {
 		Author author = authorRepository.findById(id)
 			.orElseThrow( () -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 		

@@ -7,12 +7,9 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-// Register with Eureka (@EnableDiscoveryClient)
-@EnableEurekaClient
 @SpringBootApplication
 @EnableFeignClients
 @EnableCircuitBreaker
-@EnableHystrix
 public class Application {
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
