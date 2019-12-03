@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: zuul
-    
-zuul:  routes:
-  # Instead of having API endpoints that look like  localhost:8080/author-service/1
-  # we can configure routes to get                  localhost:8080/authors/1    author-service: /authors/**
-    book-service: /books/**

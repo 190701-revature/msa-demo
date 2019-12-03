@@ -1,6 +1,1 @@
-server:  port: 8761
-
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
+# Why use bootstrap.yml instead of properties.yml?# When a spring boot app starts up, it immediately gets configuration information# using bootstrap.yml. It will then configure, and later in the boot process it will# cascade on configuration values from application.yml.# To use a config server, we need to provide configuration very early on in the # initialization process, and this requires that configuration to be offered in# the bootstrap.yml configuration step.spring:  application:    name: discovery

@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active:
+      - native
+      # The native profile when active on a config server allows it to manage configuration
+      # out of local classfile configurations. By default, Spring Cloud Config will want to
+      # get configuration from a Git repository.
+  cloud:    config:      label: config
+
+server:  port: 8888

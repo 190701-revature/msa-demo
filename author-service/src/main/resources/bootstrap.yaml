@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: author-service
+# Configuration of config service location  cloud:    config:      uri: http://localhost:8888
+      fail-fast: true
+      
+# Configuration of Eureka service location
+eureka:  client:    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/      
